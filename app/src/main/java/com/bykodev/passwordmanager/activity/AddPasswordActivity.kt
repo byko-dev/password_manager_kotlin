@@ -29,15 +29,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
+import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.components.DropdownWithInput
 import com.bykodev.passwordmanager.components.GlobalBackHandler
 import com.bykodev.passwordmanager.components.SimpleIconButton
 import com.bykodev.passwordmanager.components.SimpleToolbar
 import com.bykodev.passwordmanager.core.AppPreferencesManager
 import com.bykodev.passwordmanager.database.models.Password
+import com.bykodev.passwordmanager.helper.PasswordTypes
 import com.bykodev.passwordmanager.service.PasswordService
 import com.bykodev.passwordmanager.ui.theme.PasswordManagerTheme
 import androidx.compose.material.icons.filled.Info as Visibility
@@ -55,7 +59,7 @@ class AddPasswordActivity : ComponentActivity() {
 
             PasswordManagerTheme(darkTheme) {
                 Surface{
-                    SimpleToolbar("Add New Password")
+                    SimpleToolbar(stringResource(R.string.add_new_password_title))
                     {
                         AddPasswordForm()
                         GlobalBackHandler()
@@ -94,7 +98,7 @@ fun AddPasswordForm() {
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            label = { Text("Title") },
+            label = { Text(stringResource(R.string.title_field)) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -105,7 +109,7 @@ fun AddPasswordForm() {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Username") },
+            label = { Text(stringResource(R.string.username_field)) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -115,13 +119,13 @@ fun AddPasswordForm() {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.password_field)) },
             singleLine = true,
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val image = if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                 IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
-                    Icon(imageVector = image, "")
+                    Icon(imageVector = image, stringResource(R.string.icon_password_description))
                 }
             },
             modifier = Modifier
@@ -133,7 +137,7 @@ fun AddPasswordForm() {
         OutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { Text("URL") },
+            label = { Text(stringResource(R.string.url_field)) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,10 +146,10 @@ fun AddPasswordForm() {
         Spacer(modifier = Modifier.height(16.dp))
 
         DropdownWithInput(
-            options = listOf("Work", "School", "Social Media", "Banking", "Entertainment", "Email", "Home"),
+            options = PasswordTypes(context).getAllStrings(),
             selectedOption = type,
             onOptionSelected = {type = it},
-            label = "Type of password",
+            label = stringResource(R.string.type_of_password_field),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -154,7 +158,7 @@ fun AddPasswordForm() {
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
-            label = { Text("Additional description") },
+            label = { Text( text = stringResource(R.string.additional_description_field)) },
             modifier = Modifier
                 .fillMaxWidth(),
             maxLines = 3,
@@ -165,7 +169,7 @@ fun AddPasswordForm() {
 
 
         SimpleIconButton(
-            text = "Add",
+            text = stringResource(R.string.add_button),
             icon = Icons.Filled.Add
         ) {
             val passwordService = PasswordService()

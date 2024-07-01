@@ -1,11 +1,8 @@
 package com.bykodev.passwordmanager.activity
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +12,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -37,11 +33,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.components.GlobalBackHandler
 import com.bykodev.passwordmanager.components.NavigationDrawer
+import com.bykodev.passwordmanager.components.PasswordCardItem
 import com.bykodev.passwordmanager.core.AppPreferencesManager
 import com.bykodev.passwordmanager.service.PasswordService
 import com.bykodev.passwordmanager.ui.theme.PasswordManagerTheme
@@ -97,15 +96,15 @@ fun PasswordsList() {
 @Composable
 fun MainAppBar(onSearchClicked: () -> Unit, onMenuClicked: () -> Unit) {
     CenterAlignedTopAppBar(
-        title = { Text("Password Manager") },
+        title = { Text(text = stringResource(R.string.app_name)) },
         navigationIcon = {
             IconButton(onClick = onMenuClicked) {
-                Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                Icon(Icons.Filled.Menu, contentDescription = stringResource(R.string.icon_menu_description))
             }
         },
         actions = {
             IconButton(onClick = onSearchClicked) {
-                Icon(Icons.Filled.Search, contentDescription = "Search")
+                Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.icon_search_description))
             }
         }
     )
@@ -121,7 +120,7 @@ fun SearchAppBar(text: TextFieldValue, onTextChange: (TextFieldValue) -> Unit, o
                 onValueChange = onTextChange,
                 modifier = Modifier.fillMaxWidth(),
                 textStyle = androidx.compose.ui.text.TextStyle(fontSize = 18.sp),
-                placeholder = { Text("Search...", fontSize = 18.sp) },
+                placeholder = { Text(text = stringResource(R.string.search_placeholder), fontSize = 18.sp) },
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
                     containerColor = Color.Transparent,
@@ -132,7 +131,7 @@ fun SearchAppBar(text: TextFieldValue, onTextChange: (TextFieldValue) -> Unit, o
         },
         navigationIcon = {
             IconButton(onClick = onCloseClicked) {
-                Icon(Icons.Filled.ArrowBack, contentDescription = "Back")
+                Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.icon_back_description))
             }
         }
     )
@@ -147,35 +146,18 @@ fun MyListScreen(modifier: Modifier = Modifier, searchPhrase : String = "") {
             entry.title.contains(searchPhrase, ignoreCase = true) ||
                     entry.username.contains(searchPhrase, ignoreCase = true) ||
                     entry.type.contains(searchPhrase, ignoreCase = true) ||
-                    entry.url.contains(searchPhrase, ignoreCase = true) /*||
-                    entry.id.toString().contains(searchPhrase)*/
+                    entry.url.contains(searchPhrase, ignoreCase = true)
         }
     } else {
-        passwords  // Zwracamy pełną listę, jeśli searchPhrase jest krótsza niż 3 znaki
+        passwords
     }
 
     LazyColumn(modifier = modifier) {
         items(filteredPasswords) { entry ->
-            ListItem(id = entry.id, title = entry.title)
+            PasswordCardItem(
+                entry,
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
+            )
         }
     }
-}
-
-@Composable
-fun ListItem(id: Int, title: String) {
-    val context = LocalContext.current
-    Divider(thickness = 1.dp)
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable {
-                val intent = Intent(context, EditPasswordActivity::class.java)
-                intent.putExtra("passwordId", id)
-                context.startActivity(intent)
-            }
-            .padding(16.dp),
-    ) {
-        Text(text = title)
-    }
-    Divider(thickness = 1.dp)
 }

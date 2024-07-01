@@ -69,7 +69,8 @@ class PasswordService {
                 _title = Aes256.decrypt(password.title),
                 _username = Aes256.decrypt(password.username),
                 _type = Aes256.decrypt(password.type),
-                _url = Aes256.decrypt(password.url)
+                _url = Aes256.decrypt(password.url),
+                _description = Aes256.decrypt(password.description)
             )
 
             passwords.add(passwordModel)

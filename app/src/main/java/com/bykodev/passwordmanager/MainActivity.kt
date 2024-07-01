@@ -33,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -91,23 +92,23 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
     ) {
 
         Text(
-            text = "QPassword Manager",
-            fontSize = 30.sp, // Adjust font size as needed
+            text = stringResource(R.string.app_name),
+            fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.tertiary
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text("Login",
-            fontSize = 24.sp/*,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.tertiaryContainer*/)
+        Text(
+            text = stringResource(R.string.login_title),
+            fontSize = 24.sp
+         )
 
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Email") },
+            label = { Text(text = stringResource(R.string.email_field)) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -116,7 +117,7 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text(text = stringResource(R.string.password_field)) },
             singleLine = true,
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
@@ -167,10 +168,10 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
             ) {
                 Icon(
                     imageVector = Icons.Filled.LoginIcon,
-                    contentDescription = "Login",
+                    contentDescription = stringResource(R.string.icon_login_description),
                     modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)
                 )
-                Text("Sign in")
+                Text(text = stringResource(R.string.sing_in_button))
             }
 
             // Button for Register
@@ -183,10 +184,10 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Create,
-                    contentDescription = "Register",
+                    contentDescription = stringResource(R.string.icon_register_description),
                     modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)
                 )
-                Text("Register")
+                Text(text = stringResource(R.string.register_button))
             }
         }
 
@@ -195,7 +196,7 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
         Row(verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround) {
-            Text("Remember me")
+            Text(text = stringResource(R.string.remember_me_switcher))
 
             YesNoSwitcher(checked = rememberMe, modifier = Modifier, onCheckedChanged = {rememberMe = it} )
         }
@@ -212,7 +213,7 @@ fun ThemeSwitcher(isDarkTheme: Boolean, modifier: Modifier, onCheckedChanged: (B
     Row(verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround) {
-        Text("Theme mode")
+        Text(text = stringResource(R.string.theme_mod_switcher))
 
         Switcher(isDarkTheme, modifier, onCheckedChanged)
     }

@@ -2,12 +2,13 @@ package com.bykodev.passwordmanager.model
 
 class PasswordPreviewModel() {
 
-    constructor(_id: Int, _title: String, _username: String, _type: String, _url: String) : this() {
+    constructor(_id: Int, _title: String, _username: String, _type: String, _url: String, _description: String) : this() {
         id = _id
         title = _title
         username = _username
         type = _type
         url = _url
+        description = _description
     }
 
     var id: Int = 0
@@ -35,6 +36,12 @@ class PasswordPreviewModel() {
         }
 
     var url: String = ""
+        get() = field
+        set(value) {
+            field = value
+        }
+
+    var description: String = ""
         get() = field
         set(value) {
             field = value
