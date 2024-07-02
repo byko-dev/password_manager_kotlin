@@ -54,5 +54,28 @@
     <string name="home_password_type">Home</string>
     <string name="expand_button_content_description">See more or less information about a dog.</string>
     <string name="expanded_card_description">Description:</string>
+    <string name="expanded_card_category">Category:</string>
     <string name="expanded_card_url">URL:</string>
+    <string name="expanded_card_created_at">Created at:</string>
+    <string name="exception_connecting_problem">Failed to establish a connection with the database.</string>
+    <string name="success_password_created">Password was created successfully.</string>
+    <string name="exception_message">Oops! We encountered an unexpected issue.</string>
+    <string name="success_password_updated">Password was updated successfully.</string>
+    <string name="exception_empty_password">This password does not exist.</string>
+    <string name="validation_empty_title">Title cannot be empty</string>
+    <string name="validation_too_short_title">Title must be at least 3 characters long</string>
+    <string name="validation_empty_username">Username cannot be empty</string>
+    <string name="validation_too_short_username">Username must be at least 3 characters long</string>
+    <string name="validation_empty_password">Password cannot be empty</string>
+    <string name="validation_too_short_password">Password must be at least 3 characters long</string>
+    <string name="validation_empty_type">Type cannot be empty</string>
+    <string name="validation_too_short_type">Type must be at least 3 characters long</string>
+    <string name="exception_user_already_exists">This user already exists. If this is you, please log in instead.</string>
+    <string name="success_user_created">Account created successfully!</string>
+    <string name="exception_user_does_not_exist">This user does not exist. Please sign up to get started.</string>
+    <string name="login_failed">Login failed, please verify your credentials and try again.</string>
+    <string name="login_success">Login completed successfully.</string>
+    <string name="validation_password_do_not_match">Passwords do not match</string>
+
+
 </resources>

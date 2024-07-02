@@ -38,6 +38,8 @@ import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.activity.EditPasswordActivity
 import com.bykodev.passwordmanager.helper.PasswordTypes
 import com.bykodev.passwordmanager.model.PasswordPreviewModel
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -73,7 +75,7 @@ fun PasswordCardItem(
                     .padding(dimensionResource(R.dimen.padding_small))
             ) {
                 PasswordIcon(PasswordTypes(context).getIconByPasswordType(passwordModel.type))
-                PasswordInformation(passwordModel.username, passwordModel.username)
+                PasswordInformation(passwordModel.title, passwordModel.username)
                 Spacer(Modifier.weight(1f))
                 PasswordItemButton(
                     expanded = expanded,
@@ -118,7 +120,7 @@ private fun PasswordInformation(
     passwordDescription: String,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.fillMaxWidth(0.8f)) {
         Text(
             text = passwordTitle,
             style = MaterialTheme.typography.titleLarge
@@ -132,29 +134,63 @@ private fun PasswordInformation(
 
 @Composable
 private fun ExpandedCard(
-    username: PasswordPreviewModel,
+    passwordModel: PasswordPreviewModel,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
     ) {
+
+        if (passwordModel.type.isNotBlank()){
+            Text(
+                text = stringResource(R.string.expanded_card_category),
+                style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+                text = passwordModel.type,
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+        }
+
+        if (passwordModel.description.isNotBlank()){
+            Text(
+                text = stringResource(R.string.expanded_card_description),
+                style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+                text = passwordModel.description.replace("\n", "").trimIndent(),
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+        }
+
+
+        if (passwordModel.url.isNotBlank()){
+            Text(
+                text = stringResource(R.string.expanded_card_url),
+                style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+                text = passwordModel.url,
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+        }
+
+
         Text(
-            text = stringResource(R.string.expanded_card_description),
+            text = stringResource(R.string.expanded_card_created_at),
             style = MaterialTheme.typography.labelSmall
         )
         Text(
-            text = username.description.replace("\n", "").trimIndent(),
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
-
-        Text(
-            text = stringResource(R.string.expanded_card_url),
-            style = MaterialTheme.typography.labelSmall
-        )
-        Text(
-            text = username.url,
+            text =  passwordModel.created_at
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
             style = MaterialTheme.typography.bodyLarge
         )
     }

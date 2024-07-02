@@ -51,13 +51,13 @@ class PasswordTypes(private val context: Context) {
     fun getIconByPasswordType(type: String) : ImageVector
     {
         return when (type) {
-            context.getString(R.string.work_password_type) -> Icons.Filled.WorkHistory
-            context.getString(R.string.school_password_type) -> Icons.Filled.School
-            context.getString(R.string.social_media_password_type) -> Icons.Filled.MenuBook
-            context.getString(R.string.banking_password_type) -> Icons.Filled.MonetizationOn
-            context.getString(R.string.entertainment_password_type) -> Icons.Filled.People
-            context.getString(R.string.email_password_type) -> Icons.Filled.Email
-            context.getString(R.string.home_password_type) -> Icons.Filled.Home
+            work -> Icons.Filled.WorkHistory
+            school -> Icons.Filled.School
+            socialMedia -> Icons.Filled.MenuBook
+            banking -> Icons.Filled.MonetizationOn
+            entertainment -> Icons.Filled.People
+            email -> Icons.Filled.Email
+            home -> Icons.Filled.Home
             else -> Icons.Default.Settings
         }
     }

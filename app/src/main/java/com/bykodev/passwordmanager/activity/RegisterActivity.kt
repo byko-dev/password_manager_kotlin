@@ -140,7 +140,7 @@ fun RegisterForm() {
             ElevatedButton(
                 onClick = {
 
-                    val statusModel = UserService().createAccount(
+                    val statusModel = UserService(context).createAccount(
                         User(
                             _username = username,
                             _password = password

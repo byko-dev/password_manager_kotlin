@@ -18,7 +18,8 @@ class SQLDelightFactory {
             val connection = DriverManager.getConnection("jdbc:sqldroid:/data/data/com.bykodev.passwordmanager/databases/database.db")
             println("Connected to the database")
             return connection
-        }catch (e: Exception)
+        }
+        catch (e: Exception)
         {
             println("Error connecting to database: ${e.message}")
             e.printStackTrace()

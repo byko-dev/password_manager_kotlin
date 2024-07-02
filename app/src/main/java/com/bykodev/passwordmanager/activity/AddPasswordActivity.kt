@@ -33,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.getString
 import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.components.DropdownWithInput
 import com.bykodev.passwordmanager.components.GlobalBackHandler
@@ -172,7 +171,7 @@ fun AddPasswordForm() {
             text = stringResource(R.string.add_button),
             icon = Icons.Filled.Add
         ) {
-            val passwordService = PasswordService()
+            val passwordService = PasswordService(context)
             val statusModel = passwordService.createPassword(
                 Password(
                     _title = title,

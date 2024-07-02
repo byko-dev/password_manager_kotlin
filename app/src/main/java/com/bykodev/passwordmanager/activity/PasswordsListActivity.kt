@@ -139,7 +139,7 @@ fun SearchAppBar(text: TextFieldValue, onTextChange: (TextFieldValue) -> Unit, o
 
 @Composable
 fun MyListScreen(modifier: Modifier = Modifier, searchPhrase : String = "") {
-    val passwords = PasswordService().getUserPasswords()
+    val passwords = PasswordService(LocalContext.current).getUserPasswords()
 
     val filteredPasswords = if (searchPhrase.length >= 3) {
         passwords.filter { entry ->

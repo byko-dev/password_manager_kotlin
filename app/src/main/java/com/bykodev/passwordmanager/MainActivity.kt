@@ -108,7 +108,7 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text(text = stringResource(R.string.email_field)) },
+            label = { Text(text = stringResource(R.string.username_field)) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -135,7 +135,7 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
             // Button for Login
             ElevatedButton(
                 onClick = {
-                    val statusModel = UserService().loginAttempt(
+                    val statusModel = UserService(context).loginAttempt(
                         User(
                             _username = username,
                             _password = password

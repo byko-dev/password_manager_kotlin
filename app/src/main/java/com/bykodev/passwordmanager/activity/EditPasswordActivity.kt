@@ -1,5 +1,6 @@
 package com.bykodev.passwordmanager.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -63,7 +64,7 @@ class EditPasswordActivity : ComponentActivity() {
 
         val passwordId = intent.getIntExtra("passwordId", 0)
 
-        val password = getPassword(passwordId)
+        val password = getPassword(passwordId, this)
 
         setContent {
 
@@ -196,7 +197,7 @@ fun EditPasswordForm(password: Password) {
                 text = stringResource(R.string.edit_button),
                 icon = Icons.Filled.Add
             ) {
-                val passwordService = PasswordService()
+                val passwordService = PasswordService(context)
 
                 password.title = title
                 password.username = username
@@ -228,7 +229,7 @@ fun EditPasswordForm(password: Password) {
             {
                 DeleteAlertConfirmation(
                     onConfirm = {
-                        val passwordService = PasswordService()
+                        val passwordService = PasswordService(context)
                         passwordService.delete(password.id)
 
                         Toast.makeText(context, getString(context, R.string.password_deleted_message), Toast.LENGTH_SHORT).show()
@@ -243,11 +244,11 @@ fun EditPasswordForm(password: Password) {
     }
 }
 
-fun getPassword(passwordId: Int) : Password
+fun getPassword(passwordId: Int, context: Context) : Password
 {
     if (passwordId == 0)
         return Password()
 
-    val passwordService = PasswordService()
+    val passwordService = PasswordService(context)
     return passwordService.getPasswordById(passwordId)
 }
