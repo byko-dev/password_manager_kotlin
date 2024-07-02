@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat.getString
 import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.core.ApplicationContext
 import com.bykodev.passwordmanager.core.PasswordEncoder
-import com.bykodev.passwordmanager.core.StatusModel
+import com.bykodev.passwordmanager.model.StatusModel
 import com.bykodev.passwordmanager.database.SQLDelightFactory
 import com.bykodev.passwordmanager.database.models.User
 import com.bykodev.passwordmanager.database.repository.UserRepositoryImpl
