@@ -122,7 +122,7 @@ fun AddPasswordForm() {
             singleLine = true,
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
-                val image = if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+                val image = if (passwordVisibility) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
                 IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
                     Icon(imageVector = image, stringResource(R.string.icon_password_description))
                 }

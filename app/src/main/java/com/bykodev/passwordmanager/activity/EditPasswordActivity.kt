@@ -146,7 +146,7 @@ fun EditPasswordForm(password: Password) {
                         passwordVisibility = !passwordVisibility
                     }) {
                         Icon(
-                            imageVector = if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
+                            imageVector = if (passwordVisibility) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
                             contentDescription =
                             if (passwordVisibility)
                                 stringResource(R.string.icon_hide_password_description)

@@ -19,7 +19,6 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -94,8 +93,7 @@ fun LoginForm(isDarkThemeState: MutableState<Boolean>) {
         Text(
             text = stringResource(R.string.app_name),
             fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.tertiary
+            fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(30.dp))
 
