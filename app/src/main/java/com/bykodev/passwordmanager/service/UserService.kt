@@ -6,10 +6,10 @@ import androidx.core.content.ContextCompat.getString
 import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.core.ApplicationContext
 import com.bykodev.passwordmanager.core.PasswordEncoder
-import com.bykodev.passwordmanager.model.StatusModel
 import com.bykodev.passwordmanager.database.SQLDelightFactory
 import com.bykodev.passwordmanager.database.models.User
 import com.bykodev.passwordmanager.database.repository.UserRepositoryImpl
+import com.bykodev.passwordmanager.model.StatusModel
 
 class UserService(private val context : Context) {
 
@@ -25,11 +25,11 @@ class UserService(private val context : Context) {
             val existedUser = userRepositoryImpl.getUserByUsername(user.username)
 
             if (existedUser != null){
-                throw Exception( getString(context, R.string.exception_user_already_exists) );
+                throw Exception( getString(context, R.string.exception_user_already_exists) )
             }
 
             user.password = PasswordEncoder.hashPassword(user.password)
-            userRepositoryImpl.addUser(user);
+            userRepositoryImpl.addUser(user)
 
             return StatusModel( getString(context, R.string.success_user_created), true)
         }catch (exception: Exception){

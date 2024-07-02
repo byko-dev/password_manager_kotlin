@@ -19,7 +19,7 @@ class PasswordService(private val context : Context ) {
         try {
             validation(password)
 
-            var mutablePassword = encryptPassword(password)
+            val mutablePassword = encryptPassword(password)
             mutablePassword.ownerId = ApplicationContext.getUserId()!!
             mutablePassword.created_at = Timestamp(System.currentTimeMillis())
             mutablePassword.updated_at = Timestamp(System.currentTimeMillis())
@@ -41,14 +41,14 @@ class PasswordService(private val context : Context ) {
         try {
             validation(password)
 
-            var mutablePassword = encryptPassword(password)
+            val mutablePassword = encryptPassword(password)
             mutablePassword.updated_at = Timestamp(System.currentTimeMillis())
 
             val database = SQLDelightFactory().getDatabase()
                 ?: throw Exception( getString( context, R.string.exception_connecting_problem ) )
 
             val passwordRepositoryImpl = PasswordRepositoryImpl(database)
-            passwordRepositoryImpl.updatePassword(password);
+            passwordRepositoryImpl.updatePassword(password)
 
             return StatusModel( getString( context, R.string.success_password_updated ), true)
         }catch (exception: Exception) {
