@@ -57,25 +57,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview:1.3.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.activity:activity-compose:1.5.1")
-    //implementation("io.realm.kotlin:gradle-plugin:1.0.1")
-    /*implementation("io.realm.kotlin:library-base:1.16.0")
-    // If using Device Sync
-    implementation("io.realm.kotlin:library-sync:1.16.0")
-    // If using coroutines with the SDK
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
-    implementation("io.realm:realm-gradle-plugin:10.10.1")*/
-    //implementation("io.realm:realm-gradle-plugin:10.7.0")
-    /*implementation("io.realm:realm-gradle-plugin:10.4.0")
-    implementation("io.realm.kotlin:gradle-plugin:1.16.0")
-    implementation("io.realm.kotlin:library-base:1.11.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")*/
-    /*implementation("io.realm:realm-gradle-plugin:6.0.1")
-    implementation("io.realm:realm-gradle-plugin:6.0.1")
-    implementation("io.realm.kotlin:library-base:1.16.0")*/
-    //implementation("com.impossibl.pgjdbc-ng:pgjdbc-ng:0.8.4")
     implementation("org.sqldroid:sqldroid:1.0.3")
     implementation("com.squareup.sqldelight:android-driver:1.4.4")
-
+    implementation("androidx.compose.material:material-icons-extended:1.4.3")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

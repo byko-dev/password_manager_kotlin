@@ -1,4 +1,4 @@
-package com.bykodev.passwordmanager.core
+package com.bykodev.passwordmanager.model
 
 class StatusModel() {
 

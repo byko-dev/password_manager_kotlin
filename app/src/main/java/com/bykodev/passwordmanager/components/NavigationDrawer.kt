@@ -27,9 +27,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bykodev.passwordmanager.MainActivity
+import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.activity.AddPasswordActivity
 import com.bykodev.passwordmanager.activity.PasswordsListActivity
 import com.bykodev.passwordmanager.core.ApplicationContext
@@ -43,13 +45,13 @@ fun NavigationDrawer(onNavigate: (String) -> Unit, context: Context) {
         Column(modifier = Modifier.fillMaxWidth()) {
             DrawerHeader()
             Spacer(modifier = Modifier.height(24.dp))
-            DrawerItem(icon = Icons.Filled.Lock, label = "Passwords") {
+            DrawerItem(icon = Icons.Filled.Lock, label = stringResource(R.string.password_navigation_button)) {
                 navigateToActivity(context, PasswordsListActivity::class.java)
             }
-            DrawerItem(icon = Icons.Filled.Home, label = "Add New Password") {
+            DrawerItem(icon = Icons.Filled.Home, label = stringResource(R.string.add_new_password_navigation_button)) {
                 navigateToActivity(context, AddPasswordActivity::class.java)
             }
-            DrawerItem(icon = Icons.Filled.ArrowBack, label = "Log out") {
+            DrawerItem(icon = Icons.Filled.ArrowBack, label = stringResource(R.string.log_out_navigation_button)) {
                 ApplicationContext.logOut()
                 navigateToActivity(context, MainActivity::class.java)
             }
@@ -63,7 +65,7 @@ fun DrawerHeader() {
     Row(modifier = Modifier.fillMaxWidth().padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
         Icon(
             imageVector = Icons.Filled.AccountCircle,
-            contentDescription = "User Profile",
+            contentDescription = stringResource(R.string.user_profile_navigation),
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(48.dp)
         )

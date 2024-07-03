@@ -1,5 +1,6 @@
 package com.bykodev.passwordmanager.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -35,10 +36,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ClipboardManager
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
+import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.components.CopyOutlinedTextField
 import com.bykodev.passwordmanager.components.DeleteAlertConfirmation
 import com.bykodev.passwordmanager.components.DropdownWithInput
@@ -47,6 +51,7 @@ import com.bykodev.passwordmanager.components.SimpleIconButton
 import com.bykodev.passwordmanager.components.SimpleToolbar
 import com.bykodev.passwordmanager.core.AppPreferencesManager
 import com.bykodev.passwordmanager.database.models.Password
+import com.bykodev.passwordmanager.helper.PasswordTypes
 import com.bykodev.passwordmanager.service.PasswordService
 import com.bykodev.passwordmanager.ui.theme.PasswordManagerTheme
 import androidx.compose.material.icons.filled.Info as Visibility
@@ -59,7 +64,7 @@ class EditPasswordActivity : ComponentActivity() {
 
         val passwordId = intent.getIntExtra("passwordId", 0)
 
-        val password = getPassword(passwordId)
+        val password = getPassword(passwordId, this)
 
         setContent {
 
@@ -107,14 +112,14 @@ fun EditPasswordForm(password: Password) {
 
         CopyOutlinedTextField(text = title,
             onValueChange = { title = it },
-            label = "Title"
+            label = stringResource(R.string.title_field)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         CopyOutlinedTextField(text = username,
             onValueChange = { username = it },
-            label = "Username"
+            label = stringResource(R.string.username_field)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -122,18 +127,18 @@ fun EditPasswordForm(password: Password) {
         OutlinedTextField(
             value = passwordInput,
             onValueChange = { passwordInput = it },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.password_field)) },
             singleLine = true,
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 Row {
                     IconButton(onClick = {
-                        Toast.makeText(context, "Password has been copied!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(context, R.string.password_copied_message), Toast.LENGTH_SHORT).show()
                         clipboardManager.setText(AnnotatedString(passwordInput))
                     }) {
                         Icon(
                             imageVector = Icons.Filled.Share,
-                            contentDescription = "Copy password",
+                            contentDescription = stringResource(R.string.icon_copy_password_description),
                             modifier = Modifier.size(24.dp)
                         )
                     }
@@ -141,8 +146,13 @@ fun EditPasswordForm(password: Password) {
                         passwordVisibility = !passwordVisibility
                     }) {
                         Icon(
-                            imageVector = if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff,
-                            contentDescription = if (passwordVisibility) "Hide Password" else "Show Password",
+                            imageVector = if (passwordVisibility) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                            contentDescription =
+                            if (passwordVisibility)
+                                stringResource(R.string.icon_hide_password_description)
+                            else
+                                stringResource(R.string.icon_show_password_description),
+
                             modifier = Modifier.size(24.dp)
                         )
                     }
@@ -155,16 +165,16 @@ fun EditPasswordForm(password: Password) {
 
         CopyOutlinedTextField(text = url,
             onValueChange = { url = it },
-            label = "URL"
+            label = stringResource(R.string.url_field)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         DropdownWithInput(
-            options = listOf("Work", "School", "Social Media", "Banking", "Entertainment", "Email", "Home"),
+            options = PasswordTypes(context).getAllStrings(),
             selectedOption = type,
             onOptionSelected = {type = it},
-            label = "Type of password",
+            label = stringResource(R.string.type_of_password_field),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -173,7 +183,7 @@ fun EditPasswordForm(password: Password) {
         OutlinedTextField(
             value = description,
             onValueChange = { description = it },
-            label = { Text("Additional description") },
+            label = { Text(stringResource(R.string.additional_description_field)) },
             modifier = Modifier
                 .fillMaxWidth(),
             maxLines = 3,
@@ -184,10 +194,10 @@ fun EditPasswordForm(password: Password) {
 
         Row {
             SimpleIconButton(
-                text = "Edit",
+                text = stringResource(R.string.edit_button),
                 icon = Icons.Filled.Add
             ) {
-                val passwordService = PasswordService()
+                val passwordService = PasswordService(context)
 
                 password.title = title
                 password.username = username
@@ -207,7 +217,7 @@ fun EditPasswordForm(password: Password) {
             }
 
             SimpleIconButton(
-                text = "Delete",
+                text = stringResource(R.string.delete_button),
                 icon = Icons.Filled.Delete,
                 onAddPasswordClick = {
                     showDialog = true
@@ -219,10 +229,10 @@ fun EditPasswordForm(password: Password) {
             {
                 DeleteAlertConfirmation(
                     onConfirm = {
-                        val passwordService = PasswordService()
+                        val passwordService = PasswordService(context)
                         passwordService.delete(password.id)
 
-                        Toast.makeText(context, "Password was deleted!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, getString(context, R.string.password_deleted_message), Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, PasswordsListActivity::class.java)
                         context.startActivity(intent)
                     },
@@ -234,11 +244,11 @@ fun EditPasswordForm(password: Password) {
     }
 }
 
-fun getPassword(passwordId: Int) : Password
+fun getPassword(passwordId: Int, context: Context) : Password
 {
     if (passwordId == 0)
         return Password()
 
-    val passwordService = PasswordService()
+    val passwordService = PasswordService(context)
     return passwordService.getPasswordById(passwordId)
 }

@@ -13,6 +13,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.bykodev.passwordmanager.R
 
 @Composable
 fun GlobalBackHandler() {
@@ -26,8 +28,8 @@ fun GlobalBackHandler() {
     if (showDialog) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
-            title = { Text(text = "Really Exit?") },
-            text = { Text("Are you sure you want to exit?") },
+            title = { Text(text = stringResource(R.string.back_handler_alert_title)) },
+            text = { Text(text = stringResource(R.string.back_handler_alert_message)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -39,14 +41,14 @@ fun GlobalBackHandler() {
                         containerColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Yes")
+                    Text(text = stringResource(R.string.yes_alert_button))
                 }
             },
             dismissButton = {
                 Button(
                     onClick = { showDialog = false }
                 ) {
-                    Text("No")
+                    Text(text = stringResource(R.string.no_alert_button))
                 }
             }
         )

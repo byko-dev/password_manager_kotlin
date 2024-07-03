@@ -31,12 +31,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bykodev.passwordmanager.MainActivity
+import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.core.AppPreferencesManager
 import com.bykodev.passwordmanager.database.models.User
 import com.bykodev.passwordmanager.service.UserService
@@ -84,13 +86,14 @@ fun RegisterForm() {
     ) {
 
         Text(
-            text = "QPassword Manager",
+            text = stringResource(R.string.app_name),
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(30.dp))
 
-        Text("Register",
+        Text(
+            text = stringResource(R.string.register_title),
             fontSize = 24.sp,
             style = MaterialTheme.typography.titleMedium)
 
@@ -98,7 +101,7 @@ fun RegisterForm() {
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
-            label = { Text("Email") },
+            label = { Text(text = stringResource(R.string.username_field)) },
             singleLine = true,
             modifier = Modifier
                 .fillMaxWidth()
@@ -107,7 +110,7 @@ fun RegisterForm() {
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text(text = stringResource(R.string.password_field)) },
             singleLine = true,
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             modifier = Modifier
@@ -117,13 +120,13 @@ fun RegisterForm() {
         OutlinedTextField(
             value = retypePassword,
             onValueChange = { retypePassword = it },
-            label = { Text("Retype password") },
+            label = { Text(text = stringResource(R.string.retype_password_field)) },
             singleLine = true,
             visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
             trailingIcon = {
                 val image = if (passwordVisibility) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
                 IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
-                    Icon(imageVector = image, "")
+                    Icon(imageVector = image, contentDescription = stringResource(R.string.icon_retype_password_description))
                 }
             },
             modifier = Modifier
@@ -137,7 +140,7 @@ fun RegisterForm() {
             ElevatedButton(
                 onClick = {
 
-                    val statusModel = UserService().createAccount(
+                    val statusModel = UserService(context).createAccount(
                         User(
                             _username = username,
                             _password = password
@@ -158,10 +161,10 @@ fun RegisterForm() {
             ) {
                 Icon(
                     imageVector = Icons.Filled.Create,
-                    contentDescription = "Sign up",
+                    contentDescription = stringResource(R.string.icon_sign_up_description),
                     modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)
                 )
-                Text("Sign up")
+                Text(text = stringResource(R.string.sign_up_button))
             }
 
             // Button for Register
@@ -174,10 +177,10 @@ fun RegisterForm() {
             ) {
                 Icon(
                     imageVector = Icons.Filled.LoginIcon,
-                    contentDescription = "Login",
+                    contentDescription = stringResource(R.string.icon_login_description),
                     modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp)
                 )
-                Text("Login")
+                Text(text = stringResource(R.string.login_button))
             }
         }
     }

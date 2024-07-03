@@ -6,14 +6,16 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import com.bykodev.passwordmanager.R
 
 
 @Composable
 fun DeleteAlertConfirmation( onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(text = "Delete Confirmation") },
-        text = { Text("Are you sure you want to delete password?") },
+        title = { Text(text = stringResource(R.string.delete_confirmation_alert_title)) },
+        text = { Text(text = stringResource(R.string.delete_confirmation_alert_message)) },
         confirmButton = {
             Button(
                 onClick = onConfirm,
@@ -21,14 +23,14 @@ fun DeleteAlertConfirmation( onConfirm: () -> Unit, onDismiss: () -> Unit) {
                     containerColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Yes")
+                Text(text = stringResource(R.string.yes_alert_button))
             }
         },
         dismissButton = {
             Button(
                 onClick = onDismiss
             ) {
-                Text("No")
+                Text(stringResource(R.string.no_alert_button))
             }
         }
     )

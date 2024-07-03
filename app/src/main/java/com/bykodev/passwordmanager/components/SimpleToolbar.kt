@@ -15,10 +15,14 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import com.bykodev.passwordmanager.R
 import kotlinx.coroutines.launch
 
 @Composable
-fun SimpleToolbar(toolbarText: String = "Password Manager", content: @Composable (PaddingValues) -> Unit) {
+fun SimpleToolbar(toolbarText: String = stringResource(R.string.app_name),
+                  content: @Composable (PaddingValues) -> Unit) {
+
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -53,7 +57,7 @@ fun SimpleMainAppBar(toolbarText: String, onNavigationIconClicked: () -> Unit) {
         title = { Text(toolbarText) },
         navigationIcon = {
             IconButton(onClick = onNavigationIconClicked) {
-                Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                Icon(Icons.Filled.Menu, contentDescription = stringResource(R.string.icon_menu_description))
             }
         }
     )

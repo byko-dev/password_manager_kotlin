@@ -1,35 +1,38 @@
 package com.bykodev.passwordmanager.service
 
+import android.content.Context
+import androidx.core.content.ContextCompat.getString
+import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.core.Aes256
 import com.bykodev.passwordmanager.core.ApplicationContext
-import com.bykodev.passwordmanager.core.StatusModel
 import com.bykodev.passwordmanager.database.SQLDelightFactory
 import com.bykodev.passwordmanager.database.models.Password
 import com.bykodev.passwordmanager.database.repository.PasswordRepositoryImpl
 import com.bykodev.passwordmanager.model.PasswordPreviewModel
+import com.bykodev.passwordmanager.model.StatusModel
 import java.sql.Timestamp
 
-class PasswordService {
+class PasswordService(private val context : Context ) {
 
     fun createPassword(password: Password) : StatusModel
     {
         try {
             validation(password)
 
-            var mutablePassword = encryptPassword(password)
+            val mutablePassword = encryptPassword(password)
             mutablePassword.ownerId = ApplicationContext.getUserId()!!
             mutablePassword.created_at = Timestamp(System.currentTimeMillis())
             mutablePassword.updated_at = Timestamp(System.currentTimeMillis())
 
             val database = SQLDelightFactory().getDatabase()
-                ?: throw Exception("Failed to establish a connection with the database.")
+                ?: throw Exception( getString( context, R.string.exception_connecting_problem ) )
 
             val passwordRepositoryImpl = PasswordRepositoryImpl(database)
             passwordRepositoryImpl.createPassword(password)
 
-            return StatusModel("Password added successfully.", true)
+            return StatusModel( getString( context, R.string.success_password_created ), true)
         }catch (exception: Exception) {
-            return StatusModel(exception.message ?: "Oops! We encountered an unexpected issue.", false)
+            return StatusModel(exception.message ?: getString( context, R.string.exception_message ), false)
         }
     }
 
@@ -38,25 +41,25 @@ class PasswordService {
         try {
             validation(password)
 
-            var mutablePassword = encryptPassword(password)
+            val mutablePassword = encryptPassword(password)
             mutablePassword.updated_at = Timestamp(System.currentTimeMillis())
 
             val database = SQLDelightFactory().getDatabase()
-                ?: throw Exception("Failed to establish a connection with the database.")
+                ?: throw Exception( getString( context, R.string.exception_connecting_problem ) )
 
             val passwordRepositoryImpl = PasswordRepositoryImpl(database)
-            passwordRepositoryImpl.updatePassword(password);
+            passwordRepositoryImpl.updatePassword(password)
 
-            return StatusModel("Password added successfully.", true)
+            return StatusModel( getString( context, R.string.success_password_updated ), true)
         }catch (exception: Exception) {
-            return StatusModel(exception.message ?: "Oops! We encountered an unexpected issue.", false)
+            return StatusModel(exception.message ?: getString( context, R.string.exception_message ), false)
         }
     }
 
     fun getUserPasswords() : MutableList<PasswordPreviewModel>
     {
         val database = SQLDelightFactory().getDatabase()
-            ?: throw Exception("Failed to establish a connection with the database.")
+            ?: throw Exception( getString( context, R.string.exception_connecting_problem ) )
 
         val passwordRepositoryImpl = PasswordRepositoryImpl(database)
         val passwordList = passwordRepositoryImpl.getPasswordsByUserId(ApplicationContext.getUserId())
@@ -69,7 +72,9 @@ class PasswordService {
                 _title = Aes256.decrypt(password.title),
                 _username = Aes256.decrypt(password.username),
                 _type = Aes256.decrypt(password.type),
-                _url = Aes256.decrypt(password.url)
+                _url = Aes256.decrypt(password.url),
+                _description = Aes256.decrypt(password.description),
+                _created_at = password.created_at
             )
 
             passwords.add(passwordModel)
@@ -81,11 +86,11 @@ class PasswordService {
     fun getPasswordById(passwordId: Int) : Password
     {
         val database = SQLDelightFactory().getDatabase()
-            ?: throw Exception("Failed to establish a connection with the database.")
+            ?: throw Exception( getString( context, R.string.exception_connecting_problem ) )
 
         val passwordRepositoryImpl = PasswordRepositoryImpl(database)
         val password = passwordRepositoryImpl.getPasswordById(passwordId) ?:
-            throw Exception("This password does not exist.")
+            throw Exception( getString( context, R.string.exception_empty_password ) )
 
         return decryptPassword(password)
     }
@@ -93,7 +98,7 @@ class PasswordService {
     fun delete(passwordId: Int)
     {
         val database = SQLDelightFactory().getDatabase()
-            ?: throw Exception("Failed to establish a connection with the database.")
+            ?: throw Exception( getString( context, R.string.exception_connecting_problem ) )
 
         val passwordRepositoryImpl = PasswordRepositoryImpl(database)
         passwordRepositoryImpl.deletePasswordById(passwordId)
@@ -103,35 +108,35 @@ class PasswordService {
     private fun validation(password: Password)
     {
         if (password.title.isEmpty()){
-            throw IllegalArgumentException("Title cannot be empty")
+            throw IllegalArgumentException( getString(context, R.string.validation_empty_title) )
         }
 
         if (password.title.length < 3){
-            throw IllegalArgumentException("Title must be at least 3 characters long")
+            throw IllegalArgumentException( getString(context, R.string.validation_too_short_title) )
         }
 
         if (password.username.isEmpty()){
-            throw IllegalArgumentException("Username cannot be empty")
+            throw IllegalArgumentException( getString(context, R.string.validation_empty_username) )
         }
 
         if (password.username.length < 3){
-            throw IllegalArgumentException("Username must be at least 3 characters long")
+            throw IllegalArgumentException( getString(context, R.string.validation_too_short_username) )
         }
 
         if (password.password.isEmpty()){
-            throw IllegalArgumentException("Password cannot be empty")
+            throw IllegalArgumentException( getString(context, R.string.validation_empty_password) )
         }
 
         if (password.password.length < 3){
-            throw IllegalArgumentException("Password must be at least 3 characters long")
+            throw IllegalArgumentException( getString(context, R.string.validation_too_short_password) )
         }
 
         if (password.type.isEmpty()){
-            throw IllegalArgumentException("Type cannot be empty")
+            throw IllegalArgumentException( getString(context, R.string.validation_empty_type) )
         }
 
         if (password.type.length < 3){
-            throw IllegalArgumentException("Type must be at least 3 characters long")
+            throw IllegalArgumentException( getString(context, R.string.validation_too_short_type) )
         }
     }
 

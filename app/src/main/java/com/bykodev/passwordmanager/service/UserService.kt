@@ -1,14 +1,17 @@
 package com.bykodev.passwordmanager.service
 
 
+import android.content.Context
+import androidx.core.content.ContextCompat.getString
+import com.bykodev.passwordmanager.R
 import com.bykodev.passwordmanager.core.ApplicationContext
 import com.bykodev.passwordmanager.core.PasswordEncoder
-import com.bykodev.passwordmanager.core.StatusModel
 import com.bykodev.passwordmanager.database.SQLDelightFactory
 import com.bykodev.passwordmanager.database.models.User
 import com.bykodev.passwordmanager.database.repository.UserRepositoryImpl
+import com.bykodev.passwordmanager.model.StatusModel
 
-class UserService {
+class UserService(private val context : Context) {
 
     fun createAccount(user: User, retypePassword: String) : StatusModel
     {
@@ -16,21 +19,21 @@ class UserService {
             validation(user, retypePassword)
 
             val database = SQLDelightFactory().getDatabase()
-                ?: throw Exception("Failed to establish a connection with the database.")
+                ?: throw Exception( getString(context, R.string.exception_connecting_problem) )
 
             val userRepositoryImpl = UserRepositoryImpl(database)
             val existedUser = userRepositoryImpl.getUserByUsername(user.username)
 
             if (existedUser != null){
-                throw Exception("This user already exists. If this is you, please log in instead.");
+                throw Exception( getString(context, R.string.exception_user_already_exists) )
             }
 
             user.password = PasswordEncoder.hashPassword(user.password)
-            userRepositoryImpl.addUser(user);
+            userRepositoryImpl.addUser(user)
 
-            return StatusModel("Account created successfully!", true)
+            return StatusModel( getString(context, R.string.success_user_created), true)
         }catch (exception: Exception){
-            return StatusModel(exception.message ?: "Oops! We encountered an unexpected issue.", false)
+            return StatusModel(exception.message ?: getString(context, R.string.exception_message), false)
         }
     }
 
@@ -38,43 +41,43 @@ class UserService {
     {
         try {
             val database = SQLDelightFactory().getDatabase()
-                ?: throw Exception("Failed to establish a connection with the database.")
+                ?: throw Exception( getString(context, R.string.exception_connecting_problem) )
 
             val userRepositoryImpl = UserRepositoryImpl(database)
             val existedUser = userRepositoryImpl.getUserByUsername(user.username)
-                ?: throw Exception("This user does not exist. Please sign up to get started.")
+                ?: throw Exception( getString(context, R.string.exception_user_does_not_exist))
 
             if (!PasswordEncoder.checkPassword(user.password, existedUser.password))
             {
-                throw Exception("Login failed, please verify your credentials and try again.")
+                throw Exception( getString(context, R.string.login_failed) )
             }
 
             ApplicationContext.login(user.username, user.password, existedUser.id)
 
-            return StatusModel("Login completed successfully.", true)
+            return StatusModel(getString(context, R.string.login_success), true)
         }catch (exception: Exception) {
-            return StatusModel(exception.message ?: "Oops! We encountered an unexpected issue.", false)
+            return StatusModel(exception.message ?: getString(context, R.string.exception_message), false)
         }
     }
 
     private fun validation(user: User, retypePassword: String)
     {
         if (user.username.isEmpty()) {
-            throw IllegalArgumentException("Username cannot be empty")
+            throw IllegalArgumentException( getString(context, R.string.validation_empty_username) )
         }
         if (user.username.length < 3) {
-            throw IllegalArgumentException("Username must be at least 3 characters long")
+            throw IllegalArgumentException(getString(context, R.string.validation_too_short_username))
         }
 
         if (user.password.isEmpty()) {
-            throw IllegalArgumentException("Password cannot be empty")
+            throw IllegalArgumentException( getString(context, R.string.validation_empty_password) )
         }
         if (user.password.length < 6) {
-            throw IllegalArgumentException("Password must be at least 6 characters long")
+            throw IllegalArgumentException( getString(context, R.string.validation_too_short_password) )
         }
 
         if (user.password != retypePassword) {
-            throw IllegalArgumentException("Passwords do not match")
+            throw IllegalArgumentException(getString(context, R.string.validation_password_do_not_match))
         }
     }
 
